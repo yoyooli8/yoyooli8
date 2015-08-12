@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="renderer" content="webkit" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+<title>登录</title>
+<link rel="stylesheet" type="text/css" href="../res/theme/common.css"/>
+<link rel="stylesheet" type="text/css" href="../res/lib/dialog/4.1.7/skins/blue.css"/>
+</head>
+<body>
+<div class="ui-wrap">
+    <div id="container">
+        <div style="width: 100%;display: block;">
+        <ul class="ui-nav-list">
+            <li>登录用户：</li>
+            <li id="userName" style="color:fuchsia;font-style: italic;"></li>
+        </ul>
+        </div>
+        <div style="clear: both;"></div>
+        <div class="testGrid" style="margin-left: 35px;margin-top: 10px;">
+            <span style="font-size: 16px;">测试业务组件jar包上传：</span>
+                <ul>
+                    <li>
+                        <input type="text" id="busId" />
+                    </li>
+                    <li style="margin-top: 5px;">
+                        <input type="text" size="20" name="upfile" id="upfile" style="border:1px dotted #ccc" readonly="readonly"> 
+                        <input type="button" value="浏览" onclick="path.click()" style="border:1px solid #ccc;background:#fff"> 
+                        <input type="file" id="path" style="display:none" accept="aplication/zip" >
+                    </li>
+                    <li style="margin-top: 5px;">
+                        <input type="button" id="upbusJar" value="上传" />
+                    </li>
+                </ul>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="../res/lib/jquery/1.8.1/jquery.js"></script>
+<script type="text/javascript" src="../res/lib/handlebars/1.3.0/handlebars.js"></script>
+<script type="text/javascript" src="../res/lib/handlebars/1.3.0/helpers.js"></script>
+<script type="text/javascript" src="../res/lib/dialog/4.1.7/artDialog.js"></script>
+<script type="text/javascript" src="../res/lib/dialog/4.1.7/iframeTools.js"></script>
+<script type="text/javascript" src="../res/common/config.js"></script>
+
+<script type="text/javascript">
+	$(function(){
+		srvMap.add('getLoginInfo', 'getLoginInfo.json','common?uid=getLoginInfo');
+		srvMap.add('uploadFile',   'uploadFile.json',  'common?uid=uploadFile');
+		var file = document.getElementById('path');
+		var secfile = null;
+		file.onchange=function(e){
+			e=e || window.event;
+			var files=e.target.files;
+			secfile = files[0];
+			var ftype = secfile.type;
+			if(ftype == ''){
+				ftype = secfile.name.substring(secfile.name.lastIndexOf('.'));
+			}
+			console.log(ftype);
+			$('#upfile').val(secfile.name);
+			/**
+			if(ftype.indexOf('.jar')>-1 || ftype.indexOf('text/plain')>-1){
+				$('#upfile').val(secfile.name);
+			}else{
+				alert('只允许上传Jar包或是txt文件.');
+			}
+			***/
+		};
+		
+		$.ajax({
+	        url:srvMap.get('getLoginInfo'),
+	        data:'name=getLoginUserInfo&getLoginUserInfo=true',
+	        type:'post',
+	        dataType:'json',
+	        cache:false,
+	        success:function(data){
+	        	$('#userName').html('<a href="#">'+data.uName+'</a>');
+	        },
+	        error:function(req){
+	            try{
+	                var errortxt = $(req.responseText);
+	                var errorMsg = errortxt.find('#errorMsg');
+	                alert(errorMsg.html());
+	            }catch(e){}
+	        }
+	    });
+		
+		$('#upbusJar').click(function(){
+			var fileName = $('#upfile').val();
+			if(fileName == '' || secfile == null){
+				alert('请选择要上传的文件');
+				return;
+			}
+			var form = new FormData();
+			form.append("fname",fileName);
+			form.append("data",secfile);
+			
+			$.ajax({
+				url:srvMap.get('uploadFile'),
+				data:form,
+				type:'POST',
+				dataType:'json',
+				processData:false, //很重要，告诉jquery不要对form进行处理
+				contentType: false,//很重要，指定为false才能形成正确的Content-Type
+				success:function(json){
+					alert(json.rtnMsg);
+				}
+			});
+		});
+	})
+</script>
+</body>
+</html>

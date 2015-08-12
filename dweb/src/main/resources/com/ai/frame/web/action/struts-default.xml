@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <package name="projectstruts" extends="struts-default">
+        <interceptors>
+            <interceptor name="authority"
+                class="com.ai.frame.dubbo.action.struts2.Struts2RequestInterceptor" />
+
+            <interceptor-stack name="projectdefault">
+                <interceptor-ref name="defaultStack" />
+                <interceptor-ref name="authority" />
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="projectdefault" />
+
+        <global-results>
+            <result name="login" type="redirect">/login.html</result>
+            <result name="index" type="redirect">/index.html</result>
+        </global-results>
+    </package>
+    <package name="struts-action" extends="projectstruts" namespace="/actions">
+        <action name="common"    class="common" method="excute" />
+        <action name="forwordTo" class="common" method="forwordTo" />
+        <action name="userLogin" class="common" method="userLogin" />
+        <action name="getLoginUserInfo" class="common" method="getLoginUserInfo" />
+    </package>
+</struts>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	                    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+    <!-- HandlerMapping -->
+    <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref bean="requestInterceptor" />
+            </list>
+        </property>
+    </bean>
+    <bean id="requestInterceptor" class="com.ai.frame.dubbo.action.spring.SpringReqInterceptor">
+        <property name="contextHelper" ref="contextHelper" />
+    </bean>
+    
+    <!-- HandlerAdapter -->
+    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
+    
+    <!-- ViewResolver -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+        <property name="prefix" value="/modules/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+    
+    <!-- SpringMVC上传文件时，需要配置MultipartResolver处理器 -->  
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+        <property name="defaultEncoding" value="UTF-8"/>  
+        <!-- 指定所上传文件的总大小不能超过XXXXKB。注意maxUploadSize属性的限制不是针对单个文件，而是所有文件的容量之和 -->  
+        <property name="maxUploadSize" value="${multipart.maxSize}"/>  
+    </bean>
+    
+    <mvc:resources location="/" mapping="/**/*.html" />
+    <mvc:resources location="/res/" mapping="/res/**" />
+    
+    <bean id="springBaseAction" class="com.ai.frame.dubbo.action.spring.SpringBaseAction">
+        <property name="coreService"   ref="controlService" />
+        <property name="contextHelper" ref="contextHelper" />
+        <property name="webActionRef"  value="${spring.web.actionService}" />
+    </bean>
+    <bean name="/common" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController" >
+        <property name="delegate" ref="springBaseAction" />
+        <property name="methodNameResolver" ref="parameterMethodNameResolver" />
+    </bean>
+    <bean id="parameterMethodNameResolver" class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+        <!-- 1、根据请求参数名解析功能方法名,当请求中有参数名为这三个的将被映射为功能方法名
+                如:<input type="submit" name="forwordTo" value="跳转"/>,提交后解析得到的功能方法名为 create                                   
+        -->
+        <property name="methodParamNames" value="excute,excuteService,excuteCoreAndService,userLogin,getLoginUserInfo,forwordTo" />
+        
+        <!-- 2、默认执行的功能处理方法  -->
+        <property name="defaultMethodName" value="excute" />
+    </bean>
+    
+    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">error_fileupload</prop>
+            </props>
+        </property>
+    </bean>
+</beans>

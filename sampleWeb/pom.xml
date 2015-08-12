@@ -1,0 +1,90 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>parent</artifactId>
+		<groupId>com.ai.frame.dubbo</groupId>
+		<version>1.0.0</version>
+	</parent>
+	<groupId>com.ai.frame.dubbo</groupId>
+	<artifactId>sampleWeb</artifactId>
+	<version>${frame_version}</version>
+	<packaging>war</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>com.ai.frame.dubbo</groupId>
+			<artifactId>dweb</artifactId>
+			<version>${frame_version}</version>
+		</dependency>
+
+		<!-- spring-webmvc -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.3.1</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- jaxen -->
+		<dependency>
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+            <version>1.1-beta-9</version>
+            <scope>compile</scope>
+        </dependency>
+        
+		<!-- dubbo RPC相关 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<version>${dubbo-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>${javassist_version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty</artifactId>
+			<version>${netty_version}</version>
+		</dependency>
+
+		<!-- OSCACHE -->
+		<dependency>
+			<groupId>opensymphony</groupId>
+			<artifactId>oscache</artifactId>
+			<version>2.3</version>
+		</dependency>
+		<!-- fastJson -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.1.39</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.0.0</version>
+				<configuration>
+					<webDefaultXml>src/main/resources/webdefault.xml</webDefaultXml>
+					<contextPath>/testweb</contextPath>
+					<scanIntervalSeconds>300</scanIntervalSeconds>
+					<connectors>
+						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+							<port>80</port>
+						</connector>
+					</connectors>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

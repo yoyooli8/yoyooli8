@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper   
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai.frame.dubbo.test.core.dao.TestDao">
+    <resultMap type="User" id="userResultMap">  
+        <id property="userId"       column="userid" />  
+        <result property="userName" column="username" />  
+        <result property="pwd"      column="userpwd" />  
+        <result property="mobile"   column="mobile" />
+        <result property="address"  column="citycode" />
+    </resultMap> 
+    
+    <select id="login"  parameterType="java.util.Map" resultMap="userResultMap">  
+        select userid,username,userpwd,mobile,citycode,sex from db_ap_edu_test_user 
+        where username = #{userName} 
+          and userpwd  = #{userpwd} 
+    </select>
+</mapper>         

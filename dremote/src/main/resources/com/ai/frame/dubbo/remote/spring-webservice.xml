@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	                    http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- 和本地bean一样实现服务 -->
+	<bean id="controlService" class="com.ai.frame.dubbo.remote.spi.ControlService" />
+	
+	<!-- 生成webservice服务 -->
+	<import resource="classpath:org/codehaus/xfire/spring/xfire.xml" />
+	<bean name="IControlService" class="org.codehaus.xfire.spring.ServiceBean">
+        <property name="serviceBean" ref="controlService" />
+        <property name="serviceClass" value="com.ai.frame.dubbo.spi.IControlService" />
+    </bean>
+</beans>

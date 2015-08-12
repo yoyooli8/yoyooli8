@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE control SYSTEM "common-sub-1.9.dtd">
+<control>
+    <action path="/common">
+          <!-- regex="" 目前要可以取值如下:
+               required:必须
+               urlField:验证是否url格式的值
+               strRange:字符串范围验证,strRange{n,m}|{n,m]|[n,m}|[n,m]
+                        {，}为不包含,[,]为包含
+               numRange:验证数字范围,配置格式如strRange
+               dateRange:日期范围,如strRange
+               dateField:日期验证
+               numField:数字
+               emailField:email验证
+               regex:配置正则做校验,配置正则需要用{}包裹起来,如: regex{[a-z0-9]}
+               
+               注:当有多个验证时以半角;隔开，当使用regex验证时，且正则表达式里面有半角;时请不要使用多个验证.
+          -->
+       <input uid="loginUser" service="testBusiService" method="login" scope="control" >
+           <parameter key="userName"     toKey="userName"   scope="request" regex="required;strRange{3,10}"/>
+           <parameter key="userPwd"      toKey="userPwd"    scope="request" regex="required;strRange{6,10}"/>
+       </input>
+       <output uid="loginUser" convertor="com.ai.frame.dubbo.action.convert.CommonConvert" method="convert">
+           <parameter key="returnCode"    toKey="rtnCode" />
+     	   <parameter key="returnMessage" toKey="rtnMsg"  />
+     	   <parameter key="userName"      toKey="uName"   />
+     	   <parameter key="pwd"           toKey="uPwd"    />
+     	   <parameter key="userId"        toKey="uId"     />
+     	   <parameter key="mobile"        toKey="mobile"  />
+     	   <parameter key="address"       toKey="address" />
+       </output>
+       <input uid="getLoginInfo" service="" method="" scope="control" >
+           <parameter key="name"      toKey="name"    scope="request" />
+       </input>
+       <output uid="getLoginInfo" convertor="com.ai.frame.dubbo.action.convert.CommonConvert" method="convert">
+           <parameter key="returnCode"    toKey="rtnCode" />
+           <parameter key="returnMessage" toKey="rtnMsg"  />
+           <parameter key="userName"      toKey="uName"   />
+           <parameter key="pwd"           toKey="uPwd"    />
+           <parameter key="userId"        toKey="uId"     />
+           <parameter key="mobile"        toKey="mobile"  />
+           <parameter key="address"       toKey="address" />
+       </output>
+       <input uid="uploadFile" service="userService" method="uploadFile" scope="control" >
+           <parameter key="fname"     toKey="name"    scope="request" />
+           <parameter key="data"      toKey="file"    scope="file" />
+       </input>
+       <output uid="uploadFile" convertor="com.ai.frame.dubbo.action.convert.CommonConvert" method="convert">
+           <parameter key="returnCode"    toKey="rtnCode" />
+           <parameter key="returnMessage" toKey="rtnMsg"  />
+       </output>
+    </action>
+</control>

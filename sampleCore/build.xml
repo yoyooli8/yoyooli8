@@ -1,0 +1,18 @@
+<project name="edu_compile" basedir="." default="make-plugin-jar">
+    <property name="plugin.home"  value="C:/Users/yiyun/Desktop/hea/test-plugins" />
+    <property name="builder.home" value = "C:/Users/yiyun/Desktop/hea/test-plugins/builder-tmp" />
+    
+    <target name="make-plugin-jar" depends="">
+        
+        <echo message="拷贝class到builder目录" />
+        <copy todir="${builder.home}" overwrite="true">
+            <fileset dir="${basedir}/target/test-classes">
+                <include name="**/*.class"/>
+            </fileset>
+        </copy>
+        <echo message="拷贝class到builder目录结束..." />
+        
+        <jar jarfile="${plugin.home}/testPlugin1/testPlugin1.jar" basedir="${builder.home}"/>
+    </target>
+    
+</project>

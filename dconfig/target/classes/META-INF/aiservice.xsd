@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://www.asiainfo.com/schema/aiservice/aiservice"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	targetNamespace="http://www.asiainfo.com/schema/aiservice/aiservice">
+	
+	<xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+	<xsd:import namespace="http://www.springframework.org/schema/beans"/>
+
+    <xsd:complexType name="abstractType">
+        <xsd:attribute name="id" type="xsd:ID">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The unique identifier for a service. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="name" type="xsd:string" use="optional">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[ The name for a service. ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="contextHelperType">
+        <xsd:complexContent>
+            <xsd:extension base="abstractType">
+                <xsd:attribute name="ref" type="xsd:string" use="required">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[ The implementation bean's id. ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+	<xsd:complexType name="serviceType">
+		<xsd:complexContent>
+			<xsd:extension base="abstractType">
+				<xsd:sequence minOccurs="0" maxOccurs="1">
+	               <xsd:element ref="contextHelper" minOccurs="0" maxOccurs="1" />
+	            </xsd:sequence>
+				<xsd:attribute name="class" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ The service implementation class name. ]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="contextHelper" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ The application's context,that can get beans and cacheHelper. ]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:element name="service" type="serviceType">
+	</xsd:element>
+	<xsd:element name="contextHelper" type="contextHelperType">
+    </xsd:element>
+    
+</xsd:schema>

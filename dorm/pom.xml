@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>parent</artifactId>
+		<groupId>com.ai.frame.dubbo</groupId>
+		<version>1.0.0</version>
+	</parent>
+	<groupId>com.ai.frame.dubbo</groupId>
+	<artifactId>dorm</artifactId>
+	<version>${frame_version}</version>
+	<dependencies>
+		<dependency>
+			<groupId>com.ai.frame.dubbo</groupId>
+			<artifactId>dcommon</artifactId>
+			<version>${frame_version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
+		
+		<!-- druid -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid-version}</version>
+            <scope>provided</scope>
+        </dependency>
+		<!-- mybatis -->
+		<dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${mybatis-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- mybatis-spring -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>${mybatis-spring-version}</version>
+            <scope>provided</scope>
+        </dependency>
+        
+	</dependencies>
+</project>
